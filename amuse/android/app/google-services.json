@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "378599605331",
+    "firebase_url": "https://amuse-7d870.firebaseio.com",
+    "project_id": "amuse-7d870",
+    "storage_bucket": "amuse-7d870.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378599605331:android:4203dd581704fa9f",
+        "android_client_info": {
+          "package_name": "com.example.amuse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378599605331-9ocu4cdv4rfanc8tve2tvrvd84sbqqqg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.amuse",
+            "certificate_hash": "cdba3203aea9140aea947c2fe6380327b6ca0e8c"
+          }
+        },
+        {
+          "client_id": "378599605331-c5kmabdn6eq7i0jt25ukoolu15eouuts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFRjN_w7k4hgvTmVHuEuBIUhGrsyhPJK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378599605331-c5kmabdn6eq7i0jt25ukoolu15eouuts.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

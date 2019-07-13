@@ -19,6 +19,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_sign_in:
+  firebase_core:
+  firebase_auth:
+  firebase_storage:
+  cloud_firestore:
+  image_picker:
+  image_cropper:
+  flutter_image_compress:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -39,6 +47,15 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa-Bold.ttf
+        - asset: assets/fonts/Comfortaa-Light.ttf
+        - asset: assets/fonts/Comfortaa-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

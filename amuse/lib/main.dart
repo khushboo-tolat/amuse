@@ -1,39 +1,32 @@
+import 'package:amuse/userClass.dart';
 import 'package:flutter/material.dart';
+
+import 'LogIn_Page/login.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  User user=new User();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
+        primarySwatch: Colors.teal,
+        appBarTheme: AppBarTheme(
+            color: Colors.teal,
+            textTheme: TextTheme(
+                title: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30.0,
+                    fontFamily: 'Comfortaa',)
+            )
+        ),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-
-    );
-  }
-}
