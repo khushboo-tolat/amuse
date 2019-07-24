@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FireBaseConnection
 {
   static final FireBaseConnection _fireBaseConnection=new FireBaseConnection._internal();
+  var currentUserEmail;
   User user=new User();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -103,5 +104,28 @@ class FireBaseConnection
               return false;
             }
     }));
+  }
+  ensureLoggedIn() async {
+    GoogleSignInAccount signedInUser = _googleSignIn.currentUser;
+    if (signedInUser == null)
+      signedInUser = await _googleSignIn.signInSilently();
+    if (signedInUser == null) {
+      await _googleSignIn.signIn();
+    }
+    currentUserEmail = _googleSignIn.currentUser.email;
+    if (await _auth.currentUser() == null) {
+      GoogleSignInAuthentication credentials =
+          await _googleSignIn.currentUser.authentication;
+      // await auth.signInWithGoogle(
+      //     idToken: credentials.idToken, accessToken: credentials.accessToken);
+    }
+  }
+  Future<List<String>> getGroup(String id)async
+  {
+    List<String> temp = new List<String>();
+    QuerySnapshot doc= await Firestore.instance.collection('Group').where('groupId', isEqualTo: id).getDocuments();
+    temp.add(doc.documents[0]['groupName'].toString());
+    temp.add(doc.documents[0]['groupPic'].toString());
+    return temp;
   }
 }
