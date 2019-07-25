@@ -41,16 +41,16 @@ class FireBaseConnection
     });
   }
 
-  uploadImage(File file) async
+  Future<String> uploadImage(File file,String userId) async
   {
     if(file.lengthSync()!= 0)
       {
         User user = new User();
         StorageReference reference=FirebaseStorage.instance.ref().child(
-            'ProfilePecture/'+user.userId+".jpg");
+            'ProfilePecture/'+userId+".jpg");
         StorageUploadTask uploadTask = reference.putFile(file);
         StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-        user.profilePicture= taskSnapshot.ref.getDownloadURL().toString();
+        return taskSnapshot.ref.getDownloadURL().toString();
       }
   }
 

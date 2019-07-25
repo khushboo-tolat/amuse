@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import '../themeFile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../fireBase_connection.dart';
@@ -36,10 +39,16 @@ class CreateGroupState extends State<CreateGroup> {
                 if (formState.validate()) {
                   formState.save();
                   Map<String,String> map;
-                  
+                  String url;
+
                   if(group.category != null && group.subCat != null){
                     String groupId = user.userId + DateTime.now().toString();
+                    if(file != null)
+                    {
+                      url = await fireBaseConnection.uploadImage(file,groupId);
+                    }
                     map = {
+                      'groupPicture' : url,
                       'groupId' : groupId,
                       'groupName' : group.groupName,
                       'createdBy' : user.userId,
@@ -113,7 +122,7 @@ class CreateGroupState extends State<CreateGroup> {
           height: 140.0,
           decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/group_default.png'),
+                image: (file != null)?FileImage(file):AssetImage('assets/images/group_default.png'),
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(80)
@@ -124,13 +133,66 @@ class CreateGroupState extends State<CreateGroup> {
           width: 40,
           child: FloatingActionButton(
               child: Icon(Icons.edit),
-              onPressed: () {
-
-              }
+              onPressed: showChoiceDailog
           ),
         ),
       ],
     );
+  }
+  showChoiceDailog()
+  {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context)
+        {
+          return AlertDialog(
+            title: Text("Select Image source"),
+            actions: <Widget>[
+              (file != null)?FlatButton(
+                child: Text("Remove"),
+                onPressed:(){
+                  setState(() {
+                    file=null;
+                  });
+                  Navigator.pop(context);
+                } ,
+              ):FlatButton(),
+              FlatButton(
+                child: Text("Camera"),
+                onPressed: () {
+                  getImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+              ),
+              FlatButton(
+                child: Text("Gallery"),
+                onPressed: (){
+                  getImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
+  getImage(ImageSource source) async
+  {
+    var image = await ImagePicker.pickImage(source: source);
+    File croppedFile = await ImageCropper.cropImage(
+      sourcePath: image.path,
+      ratioX: 1.0,
+      ratioY: 1.0,
+      maxWidth: 512,
+      maxHeight: 512,
+    );
+    var result = await FlutterImageCompress.compressAndGetFile(
+      croppedFile.path, croppedFile.path,
+      quality: 90,
+    );
+    super.setState(() {
+      file = result;
+    });
   }
 
   Widget displayForm(){

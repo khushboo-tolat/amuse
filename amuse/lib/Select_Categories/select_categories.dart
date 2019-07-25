@@ -188,18 +188,20 @@ class ShowDialogState extends State<ShowDialogWidget>{
             fontSize: 20.0,
           )
       ),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Wrap(
-              spacing:5.0,
-              runSpacing:5.0,
-              children:<Widget>[
-                _filterChip(record),
-              ]
-          )
-        ],
+      content: SingleChildScrollView(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new Wrap(
+                spacing:5.0,
+                runSpacing:5.0,
+                children:<Widget>[
+                  _filterChip(record),
+                ]
+            )
+          ],
+        ),
       ),
       actions: <Widget>[
         new FlatButton(
