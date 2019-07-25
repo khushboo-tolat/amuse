@@ -142,7 +142,6 @@ class AddProfileDetailsState extends State<AddProfileDetails> {
                             ),
                             keyboardType: TextInputType.number,
                             obscureText: true,
-                            validator: Validation.validatePIN,
                             onSaved: (String newVal) {
                               if(!isNumber(newVal)) {
                                 Text('$newVal should be number only');

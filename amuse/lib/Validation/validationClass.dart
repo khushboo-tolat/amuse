@@ -1,22 +1,5 @@
 class Validation{
 
-  static String validatePIN(String value){
-
-    if (value.isEmpty){
-      return 'Password cannot be empty';
-    }
-    else if (value.length < 4) {
-      return '4 Digits are required';
-    }
-    else{
-      final n = num.tryParse(value);
-      if(n == null){
-        return '$value is not valid PIN number';
-      }
-    }
-    return null;
-  }
-
   static String validateUsername(String value){
     Pattern pattern = r'^(?=.*?[a-zA-Z]).{4,}$';
 
