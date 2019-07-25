@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../userClass.dart';
-import 'package:group/Home/home.dart';
-import 'package:group/Validation/validationClass.dart';
+import '../Home/home.dart';
+import '../Validation/validationClass.dart';
 import '../fireBase_connection.dart';
 
 void main() => runApp(group_Desc());
@@ -187,8 +187,8 @@ class groupDescState extends State<groupDesc>{
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(20.0)
                     ),
-                    onPressed: () => {
-                      removeUserDialog(),
+                    onPressed: (){
+                      removeUserDialog();
                     },
                   ),
               )
@@ -231,7 +231,7 @@ class groupDescState extends State<groupDesc>{
                 keyboardType: TextInputType.text,
                 controller: myController,
                 onSaved: (input) => myController.text = input,
-                validator: validation.validateGroupName,
+                validator: Validation.validateGroupName,
               ),
               actions: <Widget>[
                 FlatButton(
@@ -307,7 +307,7 @@ class groupDescState extends State<groupDesc>{
                   keyboardType: TextInputType.text,
                   controller: myController,
                   onSaved: (input) => myController.text = input,
-                  validator: validation.validateDescription,
+                  validator: Validation.validateDescription,
                 ),
                 actions: <Widget>[
                   FlatButton(

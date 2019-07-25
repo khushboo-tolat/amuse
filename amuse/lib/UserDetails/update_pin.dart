@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../themeFile.dart';
 import '../userClass.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:group/Validation/validationClass.dart';
+import '../Validation/validationClass.dart';
 import '../fireBase_connection.dart';
 
 class update_pin extends StatefulWidget {
@@ -104,7 +104,7 @@ class update_pinState extends State<update_pin> {
                               keyboardType: TextInputType.text,
                               obscureText: true,
                               onSaved: (input) => newPin = input,
-                              validator: validation.validatePIN,
+                              validator: Validation.validatePIN,
                             ),
 
                             new TextFormField(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themeFile.dart';
 import '../userClass.dart';
-import 'package:group/Validation/validationClass.dart';
+import '../Validation/validationClass.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -94,7 +94,7 @@ class update_profileState extends State<update_profile> {
                           ),
                           keyboardType: TextInputType.text,
                           initialValue: user.name,
-                          validator: validation.validateUsername,
+                          validator: Validation.validateUsername,
                           onSaved: (input) => user.name = input,
                         ),
 

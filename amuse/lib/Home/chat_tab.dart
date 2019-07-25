@@ -1,6 +1,6 @@
 //import 'themeFile.dart';
 import 'package:flutter/material.dart';
-import 'package:group/Group/createGroup.dart';
+import '../Group/createGroup.dart';
 
 class ChatTab extends StatefulWidget{
   @override

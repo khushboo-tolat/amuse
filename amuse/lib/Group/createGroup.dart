@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../themeFile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../fireBase_connection.dart';
-import 'package:group/Group/groupClass.dart';
+import 'groupClass.dart';
 import '../userClass.dart';
-import 'package:group/Validation/validationClass.dart';
+import '../Validation/validationClass.dart';
 
 class CreateGroup extends StatefulWidget{
   @override
@@ -17,6 +19,7 @@ class CreateGroupState extends State<CreateGroup> {
   User user = new User();
   Group group = new Group();
   var sliderValue = 5.0;
+  File file;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +151,7 @@ class CreateGroupState extends State<CreateGroup> {
                   labelText: "Group Name",
                 ),
                 keyboardType: TextInputType.text,
-                validator: validation.validateGroupName,
+                validator: Validation.validateGroupName,
               ),
 
               Padding(padding: EdgeInsets.only(top: 15),),
@@ -211,7 +214,7 @@ class CreateGroupState extends State<CreateGroup> {
                   labelText: "Group Description",
                 ),
                 keyboardType: TextInputType.text,
-                validator: validation.validateDescription,
+                validator: Validation.validateDescription,
                 onSaved: (input) => group.desc = input,
               ),
 
