@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:amuse/LogIn_Page/login.dart';
+import 'package:amuse/Select_Categories/select_categories.dart';
 import 'package:amuse/Validation/validationClass.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,21 +36,24 @@ class AddProfileDetailsState extends State<AddProfileDetails> {
             child: IconButton(
               icon: Icon(Icons.check, size: 30,),
               onPressed: () async {
-                if(pwd1.text == pwd2.text)
+                if(_formKey.currentState.validate())
                   {
-                    _formKey.currentState.validate();
-                    _formKey.currentState.save();
+                    if(pwd1.text == pwd2.text)
+                    {
+                      _formKey.currentState.validate();
+                      _formKey.currentState.save();
 //                    await fireBaseConnection.signOut();
 //                    await fireBaseConnection.signUpWithEmail(user.eMail, pwd1.text);
-                    if(file != null)
+                      if(file != null)
                       {
                         await fireBaseConnection.uploadImage(file);
                       }
-                    await fireBaseConnection.addUserDetails(user, pwd1.text);
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MyHomePage()));
+                      await fireBaseConnection.addUserDetails(user, pwd1.text);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SelectCategories()));
+                    }
                   }
 
               },
@@ -62,7 +66,7 @@ class AddProfileDetailsState extends State<AddProfileDetails> {
         child: GestureDetector(
           //behavior: HitTestBehavior.opaque,
           onTap: () {
-            FocusScope.of(context).detach();
+            FocusScope.of(context).unfocus();
           },
           child: SingleChildScrollView(
             child: Column(
@@ -129,15 +133,15 @@ class AddProfileDetailsState extends State<AddProfileDetails> {
                           Padding(padding: EdgeInsets.only(top: 15),),
 
                           new TextFormField(
-                            //validator: Validation.validatePassword,
+                            validator: (value){
+                              return Validation.validatePIN(value);
+                            },
                             controller: pwd1,
-                            //onSaved: (input) => user.name = input,
                             decoration: InputDecoration(
                               labelText: "Enter PIN",
                             ),
                             keyboardType: TextInputType.number,
                             obscureText: true,
-                            validator: Validation.validatePIN,
                             onSaved: (String newVal) {
                               if(!isNumber(newVal)) {
                                 Text('$newVal should be number only');
@@ -149,7 +153,6 @@ class AddProfileDetailsState extends State<AddProfileDetails> {
 
                           new TextFormField(
                             controller: pwd2,
-                            //onSaved: (input) => user.name = input,
                             decoration: InputDecoration(
                               labelText: "Comfirm PIN",
                             ),

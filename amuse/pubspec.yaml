@@ -19,7 +19,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   google_sign_in:
   firebase_core:
   firebase_auth:
@@ -28,6 +27,7 @@ dependencies:
   image_picker:
   image_cropper:
   flutter_image_compress:
+  flutter_staggered_grid_view:
   firebase_database:
 
   # The following adds the Cupertino Icons font to your application.

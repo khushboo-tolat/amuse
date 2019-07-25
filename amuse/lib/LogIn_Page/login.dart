@@ -36,7 +36,7 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            FocusScope.of(context).detach();
+            FocusScope.of(context).unfocus();
           },
           child: Stack(
             fit: StackFit.expand,
