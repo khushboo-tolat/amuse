@@ -128,4 +128,109 @@ class FireBaseConnection
     temp.add(doc.documents[0]['groupPic'].toString());
     return temp;
   }
+
+  addGroupDetails(groupData) async{
+    await Firestore.instance
+        .collection("Group")
+        .add(groupData)
+        .catchError((e){
+          print(e);
+        });
+  }
+
+  updateUserName(name) async{
+    var doc = await Firestore.instance.collection('User').where('userId', isEqualTo: user.userId).getDocuments();
+
+    await doc.documents.forEach((doc) =>{
+      doc.reference.updateData({'userName': name}),
+    });
+  }
+
+  updatePin(newPin, id) async{
+    await Firestore.instance.collection('User').document(id).updateData({'pin': newPin}).catchError((x) {
+      print(x);
+    });
+  }
+
+  Future<bool> checkOldPin(String oldPin) async{
+    return (
+        await Firestore.instance.collection('User')
+            .where('userId', isEqualTo: user.userId)
+            .where('pin', isEqualTo: oldPin)
+            .getDocuments()
+            .then((user){
+          if(user.documents.length == 1)
+          {
+            return true;
+          }
+          else
+          {
+            return false;
+          }
+        })
+    );
+  }
+
+  Future countMembers(groupId) async {
+    var respectsQuery = Firestore.instance
+        .collection('GroupMember')
+        .where('groupId', isEqualTo: groupId);
+    var querySnapshot = await respectsQuery.getDocuments();
+    var total = querySnapshot.documents.length;
+    return total;
+  }
+
+  updateGroupName(id, name) async{
+    await Firestore.instance
+        .collection('Group')
+        .document(id)
+        .updateData({'groupName': name})
+        .catchError((x) {
+      print(x);
+    });
+  }
+
+  updateDescription(id, name) async{
+    await Firestore.instance
+        .collection('Group')
+        .document(id)
+        .updateData({'description': name})
+        .catchError((x) {
+      print(x);
+    });
+  }
+
+  deleteUser(groupId) async{
+    var doc = await Firestore.instance
+        .collection('GroupMember')
+        .where('groupId', isEqualTo: groupId)
+        .where('userId', isEqualTo: user.userId)
+        .getDocuments();
+
+    await doc.documents.forEach((doc) => {
+      doc.reference.delete(),
+    });
+
+    var doc2 = await Firestore.instance
+        .collection('UserGroups')
+        .where('groupId', isEqualTo: groupId)
+        .where('userId', isEqualTo: user.userId)
+        .getDocuments();
+
+    await doc2.documents.forEach((doc2) => {
+      doc2.reference.delete(),
+    });
+  }
+
+  offlineUser(groupId) async{
+    var doc = await Firestore.instance
+        .collection('UserGroups')
+        .where('groupId', isEqualTo: groupId)
+        .where('userId', isEqualTo: user.userId)
+        .getDocuments();
+
+    await doc.documents.forEach((doc) => {
+      doc.reference.updateData({'mode': false}),
+    });
+  }
 }
