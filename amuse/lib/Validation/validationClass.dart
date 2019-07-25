@@ -58,7 +58,7 @@ class Validation{
     if (value.isEmpty){
       return 'Password cannot be empty';
     }
-    else if (value.length < 4) {
+    else if (value.length != 4) {
       return '4 Digits are required';
     }
     else{
