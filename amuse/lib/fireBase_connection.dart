@@ -4,6 +4,7 @@ import 'package:amuse/userClass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'categorie.dart';
 
 class FireBaseConnection
 {
@@ -77,7 +78,7 @@ class FireBaseConnection
     }
     Firestore.instance.runTransaction((Transaction addDetails)async
     {
-      await Firestore.instance.collection("Users").add(maped).catchError((e)
+      await Firestore.instance.collection("User").add(maped).catchError((e)
       {
         print(e);
       });
@@ -90,7 +91,7 @@ class FireBaseConnection
 
   Future<bool> checkUserIsAlreadyRegistered(userId)async
   {
-    return (await Firestore.instance.collection('Users')
+    return (await Firestore.instance.collection('User')
         .where('userId', isEqualTo: userId).limit(1)
         .getDocuments()
         .then((user){
@@ -103,6 +104,21 @@ class FireBaseConnection
               return false;
             }
     }));
+  }
+  Future<bool> addUserCategories(String userId, ListCategories list)
+  {
+    CollectionReference ref = Firestore.instance.collection('UserInterest');
+    list.list.entries.forEach(
+            (value)
+            {
+              Map<String,dynamic> maped ={
+                'userId' : userId,
+                'categories' : value.value.mainCat.toString(),
+                'subCats' : value.value.subCat.toList()
+              };
+              ref.add(maped);
+            });
+
   }
 
 
