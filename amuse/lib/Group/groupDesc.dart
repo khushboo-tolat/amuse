@@ -1,22 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import '../userClass.dart';
 import '../Home/home.dart';
 import '../Validation/validationClass.dart';
 import '../fireBase_connection.dart';
-
-void main() => runApp(group_Desc());
-
-class group_Desc extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: new groupDesc(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
 
 class groupDesc extends StatefulWidget{
   @override
@@ -30,6 +22,7 @@ class groupDescState extends State<groupDesc>{
   var groupId = 'qwerty';
   User user = new User();
   var length;
+  File file;
 
   void initState() {
     fireBaseConnection.countMembers(groupId).then((result) {
@@ -59,11 +52,15 @@ class groupDescState extends State<groupDesc>{
                   GestureDetector(
                     onTap: (){
                       if(userID == adminID) {
-                        updateImage();
+                        showChoiceDailog();
+                        String str= fireBaseConnection.uploadImage(file, snapshot.data.documents[0]['groupId']).toString();
+                        fireBaseConnection.updateGroupPic(str, groupId)
                       }
                     },
                     child: Image(
-                      image: NetworkImage(snapshot.data.documents[0]['groupPic']),
+                      image: (NetworkImage(snapshot.data.documents[0]['groupPic']) != null)
+                          ?NetworkImage(snapshot.data.documents[0]['groupPic'])
+                          :AssetImage('assets/images/group_default.png'),
                       fit: BoxFit.fill,
                       height: 350,
                       width: 420,
@@ -198,7 +195,61 @@ class groupDescState extends State<groupDesc>{
       ),
     );
   }
-
+  showChoiceDailog()
+  {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context)
+        {
+          return AlertDialog(
+            title: Text("Select Image source"),
+            actions: <Widget>[
+              (file != null)?FlatButton(
+                child: Text("Remove"),
+                onPressed:(){
+                  setState(() {
+                    file=null;
+                  });
+                  Navigator.pop(context);
+                } ,
+              ):FlatButton(),
+              FlatButton(
+                child: Text("Camera"),
+                onPressed: () {
+                  getImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+              ),
+              FlatButton(
+                child: Text("Gallery"),
+                onPressed: (){
+                  getImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
+  getImage(ImageSource source) async
+  {
+    var image = await ImagePicker.pickImage(source: source);
+    File croppedFile = await ImageCropper.cropImage(
+      sourcePath: image.path,
+      ratioX: 1.0,
+      ratioY: 1.0,
+      maxWidth: 512,
+      maxHeight: 512,
+    );
+    var result = await FlutterImageCompress.compressAndGetFile(
+      croppedFile.path, croppedFile.path,
+      quality: 90,
+    );
+    super.setState(() {
+      file = result;
+    });
+  }
 
 
   updateImage() {

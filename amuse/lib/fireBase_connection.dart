@@ -146,6 +146,13 @@ class FireBaseConnection
       doc.reference.updateData({'userName': name}),
     });
   }
+  updateGroupPic(String url, String groupId) async{
+    var doc = await Firestore.instance.collection('Group').where('groupId', isEqualTo: groupId).getDocuments();
+
+    await doc.documents.forEach((doc) =>{
+      doc.reference.updateData({'groupPic': url}),
+    });
+  }
 
   updatePin(newPin, id) async{
     await Firestore.instance.collection('User').document(id).updateData({'pin': newPin}).catchError((x) {
