@@ -11,17 +11,26 @@ import '../Validation/validationClass.dart';
 import '../fireBase_connection.dart';
 
 class groupDesc extends StatefulWidget{
+  String gId;
+  groupDesc(id){
+    this.gId = id;
+  }
+
   @override
-  State<StatefulWidget> createState() => groupDescState();
+  State<StatefulWidget> createState() => groupDescState(gId);
 }
 
 class groupDescState extends State<groupDesc>{
   FireBaseConnection fireBaseConnection = new FireBaseConnection();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final myController = TextEditingController();
-  var groupId = 'qwerty';
   User user = new User();
   var length;
+  String groupId;
+
+  groupDescState(id) {
+    this.groupId = id;
+  }
   File file;
 
   void initState() {
@@ -251,7 +260,6 @@ class groupDescState extends State<groupDesc>{
     });
   }
 
-
   updateImage() {
     print("tap");
   }
@@ -438,7 +446,7 @@ class groupDescState extends State<groupDesc>{
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                           builder: (BuildContext context) {
-                            return HomePage();
+                            return Home_Page();
                           }));
                 },
                 child: Text(

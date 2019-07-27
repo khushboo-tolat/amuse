@@ -10,6 +10,7 @@ class NotificationTab extends StatefulWidget{
 class NotificationTabState extends State<NotificationTab>{
   FireBaseConnection fireBaseConnection = new FireBaseConnection();
 
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

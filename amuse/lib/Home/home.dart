@@ -1,22 +1,7 @@
-import '../themeFile.dart';
 import 'package:flutter/material.dart';
 import 'profile_tab.dart';
 import 'chat_tab.dart';
 import 'notification_tab.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-
-void main() => runApp(new HomePage());
-
-class HomePage extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Home_Page(),
-      theme: ThemeFile.themeData,
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
 
 class Home_Page extends StatefulWidget{
   @override
