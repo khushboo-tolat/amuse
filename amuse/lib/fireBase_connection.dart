@@ -41,16 +41,31 @@ class FireBaseConnection
     });
   }
 
-  Future<String> uploadImage(File file,String userId) async
+  Future<String> uploadImage(File file,String Id, bool temp) async
   {
-    if(file.lengthSync()!= 0)
+    if(temp)
       {
-        User user = new User();
-        StorageReference reference=FirebaseStorage.instance.ref().child(
-            'ProfilePecture/'+userId+".jpg");
-        StorageUploadTask uploadTask = reference.putFile(file);
-        StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-        return taskSnapshot.ref.getDownloadURL().toString();
+        if(file.lengthSync()!= 0)
+        {
+          User user = new User();
+          StorageReference reference=FirebaseStorage.instance.ref().child(
+              'ProfilePecture/'+Id+".jpg");
+          StorageUploadTask uploadTask = reference.putFile(file);
+          StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+          return taskSnapshot.ref.getDownloadURL().toString();
+        }
+      }
+    else
+      {
+        if(file.lengthSync()!= 0)
+        {
+          User user = new User();
+          StorageReference reference=FirebaseStorage.instance.ref().child(
+              'GroupPic/'+Id+".jpg");
+          StorageUploadTask uploadTask = reference.putFile(file);
+          StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+          return taskSnapshot.ref.getDownloadURL().toString();
+        }
       }
   }
 
@@ -152,6 +167,24 @@ class FireBaseConnection
     await doc.documents.forEach((doc) =>{
       doc.reference.updateData({'groupPic': url}),
     });
+  }
+  deleteGroupPic(String groupId) async{
+    var doc = await Firestore.instance.collection('Group').where('groupId', isEqualTo: groupId).getDocuments();
+
+    await doc.documents.forEach((doc) =>{
+      doc.reference.updateData({'groupPic': null}),
+    });
+    StorageReference desert_ref = FirebaseStorage().ref().child("GroupPic/"+groupId+".jpg");
+    desert_ref.delete();
+  }
+  deleteProfilePic(String userId) async{
+    var doc = await Firestore.instance.collection('User').where('userId', isEqualTo: userId).getDocuments();
+
+    await doc.documents.forEach((doc) =>{
+      doc.reference.updateData({'profilePictureLink': null}),
+    });
+    StorageReference desert_ref = FirebaseStorage().ref().child("ProfilePecture/"+userId+".jpg");
+    desert_ref.delete();
   }
 
   updatePin(newPin, id) async{

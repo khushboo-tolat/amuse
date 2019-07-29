@@ -59,11 +59,15 @@ class groupDescState extends State<groupDesc>{
                 alignment: AlignmentDirectional.bottomStart,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: (){
+                    onTap: () async{
                       if(userID == adminID) {
                         showChoiceDailog();
-                        String str= fireBaseConnection.uploadImage(file, snapshot.data.documents[0]['groupId']).toString();
-                        fireBaseConnection.updateGroupPic(str, groupId)
+                        if(file!=null)
+                          {
+                            String str= fireBaseConnection
+                                .uploadImage(file, snapshot.data.documents[0]['groupId'],false).toString();
+                            await fireBaseConnection.updateGroupPic(str, groupId);
+                          }
                       }
                     },
                     child: Image(
@@ -216,9 +220,7 @@ class groupDescState extends State<groupDesc>{
               (file != null)?FlatButton(
                 child: Text("Remove"),
                 onPressed:(){
-                  setState(() {
-                    file=null;
-                  });
+                  fireBaseConnection.deleteGroupPic(groupId);
                   Navigator.pop(context);
                 } ,
               ):FlatButton(),
@@ -258,10 +260,6 @@ class groupDescState extends State<groupDesc>{
     super.setState(() {
       file = result;
     });
-  }
-
-  updateImage() {
-    print("tap");
   }
 
   Widget editName(String name, String id) {
