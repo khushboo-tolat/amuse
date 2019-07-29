@@ -46,7 +46,7 @@ class AddProfileDetailsState extends State<AddProfileDetails> {
 //                    await fireBaseConnection.signUpWithEmail(user.eMail, pwd1.text);
                       if(file != null)
                       {
-                        user.profilePicture = await fireBaseConnection.uploadImage(file,user.userId);
+                        user.profilePicture = await fireBaseConnection.uploadImage(file,user.userId,true);
                       }
                       await fireBaseConnection.addUserDetails(user, pwd1.text);
                       Navigator.pushReplacement(

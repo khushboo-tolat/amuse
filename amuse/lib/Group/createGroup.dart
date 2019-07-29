@@ -45,7 +45,7 @@ class CreateGroupState extends State<CreateGroup> {
                     String groupId = user.userId + DateTime.now().toString();
                     if(file != null)
                     {
-                      url = await fireBaseConnection.uploadImage(file,groupId);
+                      url = await fireBaseConnection.uploadImage(file,groupId,false);
                     }
                     map = {
                       'groupPicture' : url,

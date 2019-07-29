@@ -19,18 +19,13 @@ class update_profileState extends State<update_profile> {
   User user = new User();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   File file = null;
+  bool removed=false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 15),
@@ -59,8 +54,11 @@ class update_profileState extends State<update_profile> {
                     height: 140.0,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: (file==null) ? AssetImage(
-                              "assets/images/user_default.png") : FileImage(file),
+                          image: (removed==true)
+                              ?AssetImage("assets/images/user_default.png")
+                              :(user.profilePicture==null)
+                                ? AssetImage("assets/images/user_default.png")
+                                : NetworkImage(user.profilePicture),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(80)
@@ -123,24 +121,16 @@ class update_profileState extends State<update_profile> {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save();
+      if(removed==true)
+        {
+          await fireBaseConnection.deleteProfilePic(user.userId);
+        }
       if(file != null)
       {
-        await uploadImage(file);
+        await fireBaseConnection.uploadImage(file, user.userId,true);
       }
       await fireBaseConnection.updateUserName(user.name);
       Navigator.pop(context);
-    }
-  }
-
-  uploadImage(File file) async {
-    if(file.lengthSync()!= 0)
-    {
-      User user = new User();
-      StorageReference reference=FirebaseStorage.instance.ref().child(
-          'ProfilePecture/'+user.userId+".jpg");
-      StorageUploadTask uploadTask = reference.putFile(file);
-      StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-      user.profilePicture= taskSnapshot.ref.getDownloadURL().toString();
     }
   }
 
@@ -157,11 +147,8 @@ class update_profileState extends State<update_profile> {
       croppedFile.path, croppedFile.path,
       quality: 90,
     );
-    super.setState(() {
-      file = result;
-    });
+    file=result;
   }
-
   showChoiceDailog() {
     return showDialog(
         context: context,
@@ -175,6 +162,7 @@ class update_profileState extends State<update_profile> {
                 onPressed:(){
                   setState(() {
                     file=null;
+                    removed=true;
                   });
                   Navigator.pop(context);
                 } ,

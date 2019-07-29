@@ -1,7 +1,10 @@
+import 'package:amuse/LogIn_Page/login.dart';
+import 'package:amuse/Select_Categories/select_categories.dart';
 import 'package:flutter/material.dart';
 import '../UserDetails/update_profile.dart';
 import '../UserDetails/update_category.dart';
 import '../UserDetails/update_pin.dart';
+import '../fireBase_connection.dart';
 import '../userClass.dart';
 
 class ProfileTab extends StatefulWidget{
@@ -79,7 +82,7 @@ class ProfileTabState extends State<ProfileTab>{
                 onTap: (){
                   Navigator.of(context).push(
                       new MaterialPageRoute(
-                          builder: (context) => new update_category(),
+                          builder: (context) => new SelectCategories(),
                           maintainState: true
                       )
                   );
@@ -119,7 +122,16 @@ class ProfileTabState extends State<ProfileTab>{
                   shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(30.0)
                   ),
-                  onPressed: (){},
+                  onPressed: ()async{
+                    FireBaseConnection fireBaseConnection = new FireBaseConnection();
+                    await fireBaseConnection.signOut();
+                    Navigator.of(context).pushReplacement(
+                        new MaterialPageRoute(
+                            builder: (context) => new LoginPage(),
+                            maintainState: true
+                        )
+                    );
+                  },
               ),
             )
           ],
