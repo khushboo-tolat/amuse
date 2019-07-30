@@ -4,6 +4,7 @@ import 'package:amuse/Validation/validationClass.dart';
 void main(){
 
   //Validate UserName
+
   test('Empty Username returns error string', () {
     final result = Validation.validateUsername('');
     expect(result, 'Username cannot be empty');
@@ -41,6 +42,7 @@ void main(){
   });
 
   //Validate PIN Number
+  
   test('Empty PIN returns error string', () {
     final result = Validation.validatePIN('');
     expect(result, 'PIN cannot be empty');
@@ -71,6 +73,8 @@ void main(){
     expect(result,null);
   });
 
+  //Validate Group Name
+
   test('Empty Group Name returns error string', () {
     final result = Validation.validateGroupName('');
     expect(result, 'GroupName can\'t be empty');
@@ -85,6 +89,8 @@ void main(){
     final result = Validation.validateGroupName('abcdef');
     expect(result,null);
   });
+
+  //Validate Group Description
 
   test('Empty Group Description returns error',(){
     final result = Validation.validateDescription('');
