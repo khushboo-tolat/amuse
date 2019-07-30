@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:amuse/Group/groupDesc.dart';
+
 import 'chat_List.dart';
 import '../firebase_Connection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,34 +60,39 @@ class ChatScreenState extends State<ChatScreen> {
     return new Scaffold(
         appBar: new AppBar(
         backgroundColor: Colors.teal,
-        leading:new GestureDetector(
-          child: Row(
-            children:[
-            new CircleAvatar(
-              radius: 18,
-              child: ClipOval(
-                child: Image.network(
-                  img,
-                  height: 10.0,
-                  width: 10.0,
-                ),
-              ),
-            ),
-            new Text(
-              groupName,
-              style: TextStyle(
-                fontFamily: 'Cortanna',
-                fontSize: 30.0,
-              ),
-            )
-          ],
-        ),
-        onTap:()=>FlatButton(
-            child:Text("Group Description"),
-            onPressed:()=>(
-              Text("Group ")
+        title: new GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children:[
+                new CircleAvatar(
+                  radius: 18,
+                    child: ClipOval(
+                      child: Image.network(
+                        img,
+                        height: 10.0,
+                        width: 10.0,
+                      ),
+                    ),
+                  ),
+                new Text(
+                  groupName,
+                  style: TextStyle(
+                    fontFamily: 'Cortanna',
+                    fontSize: 30.0,
+                  ),
+                )
+              ],
             ),
           ),
+          onTap:(){
+            Navigator.of(context).push(
+                new MaterialPageRoute(
+                    builder: (context) => new groupDesc(peerId),
+                    maintainState: true
+                )
+            );
+          }
         ),
         actions: <Widget>[
           PopupMenuButton( 
@@ -163,15 +170,6 @@ class ChatScreenState extends State<ChatScreen> {
         ));
   }
 
-CupertinoButton getIOSSendButton() {
-  return new CupertinoButton(
-    child: new Text("Send"),
-    onPressed: _isComposingMessage
-      ? () => _textMessageSubmitted(_textEditingController.text)
-      : null,
-    );
-  }
-
 IconButton getDefaultSendButton() {
   return new IconButton(
     icon: new Icon(Icons.send),
@@ -227,9 +225,7 @@ Widget _buildTextComposer() {
           ),
           new Container(
             margin: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: Theme.of(context).platform == TargetPlatform.iOS
-                ? getIOSSendButton()
-                : getDefaultSendButton(),
+            child: getDefaultSendButton(),
           ),
         ],
       ),

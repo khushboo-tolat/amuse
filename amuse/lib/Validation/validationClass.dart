@@ -37,7 +37,6 @@ class Validation{
       return null;
     }
   }
-
   static String validateDescription(String value){
     Pattern pattern = r'^.{1,100}$';
 
