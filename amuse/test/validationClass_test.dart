@@ -7,7 +7,7 @@ void main(){
 
   test('Empty Username returns error string', () {
     final result = Validation.validateUsername('');
-    expect(result, 'Username cannot be empty');
+    expect(result, 'UserName cannot be empty');
   });
 
   test('Non-empty Username not length of 4 returns error string', () {
@@ -42,7 +42,7 @@ void main(){
   });
 
   //Validate PIN Number
-  
+
   test('Empty PIN returns error string', () {
     final result = Validation.validatePIN('');
     expect(result, 'PIN cannot be empty');
