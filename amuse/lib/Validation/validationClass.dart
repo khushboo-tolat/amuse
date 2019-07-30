@@ -46,9 +46,6 @@ class Validation{
     if (value.isEmpty){
       return 'Group Description can\'t be empty';
     }
-    else if(value.length < 1){
-      return 'Atleast 1 characters required';
-    }
     else if(value.length > 100){
       return 'Not more than 100 characters required';
     }
@@ -64,9 +61,6 @@ class Validation{
 
     if (value.isEmpty){
       return 'GroupName can\'t be empty';
-    }
-    else if(value.length < 1){
-      return 'Atleast 1 characters required';
     }
     else if(value.length > 25){
       return 'Not more than 25 characters required';

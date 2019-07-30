@@ -63,7 +63,7 @@ class groupDescState extends State<groupDesc>{
                       if(userID == adminID) {
                         showChoiceDailog();
                         String str= fireBaseConnection.uploadImage(file, snapshot.data.documents[0]['groupId']).toString();
-                        fireBaseConnection.updateGroupPic(str, groupId)
+                        fireBaseConnection.updateGroupPic(str, groupId);
                       }
                     },
                     child: Image(

@@ -32,15 +32,6 @@ class Home_PageState extends State<Home_Page>{
         title: Text(
           "amuse",
         ),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Icon(
-                Icons.search,
-                size: 30,
-              )
-          )
-        ],
       ),
 
       body: _pages[_selectedIndex],
