@@ -1,4 +1,4 @@
-import 'package:amuse/LogIn_Page/login.dart';
+import 'package:amuse/Home/home.dart';
 import 'package:amuse/userClass.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +53,7 @@ class _SelectCategoriesState extends State<SelectCategories> {
               User user=new User();
               await fireBaseConnection.addUserCategories(user.userId, listCategories);
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => MyHomePage()));
+                  MaterialPageRoute(builder: (context) => Home_Page()));
             },
           )
         ],

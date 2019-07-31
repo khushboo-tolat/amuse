@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:amuse/Location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../themeFile.dart';
@@ -38,7 +40,7 @@ class CreateGroupState extends State<CreateGroup> {
                 final formState = _formKey.currentState;
                 if (formState.validate()) {
                   formState.save();
-                  Map<String,String> map;
+                  Map<String,dynamic> map;
                   String url;
 
                   if(group.category != null && group.subCat != null){
@@ -47,6 +49,7 @@ class CreateGroupState extends State<CreateGroup> {
                     {
                       url = await fireBaseConnection.uploadImage(file,groupId,false);
                     }
+                    Position p =Location.getLocation();
                     map = {
                       'groupPicture' : url,
                       'groupId' : groupId,
@@ -57,6 +60,7 @@ class CreateGroupState extends State<CreateGroup> {
                       'subCat' : group.subCat,
                       'description' : group.desc,
                       'dateTime' : DateTime.now().toString(),
+                      'geoPoint' : new GeoPoint(p.latitude, p.longitude)
                     };
 
                     await fireBaseConnection.addGroupDetails(map);

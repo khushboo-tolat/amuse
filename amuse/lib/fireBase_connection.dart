@@ -20,7 +20,7 @@ class FireBaseConnection
   }
   FireBaseConnection._internal();
 
-  Future<FirebaseUser> googleAutoSignIn() async {
+  Future<AuthResult> googleAutoSignIn() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -28,10 +28,10 @@ class FireBaseConnection
       idToken: googleAuth.idToken,
     );
 
-    final FirebaseUser fUser = await _auth.signInWithCredential(credential);
-    user.userId=fUser.uid;
-    user.eMail=fUser.email;
-    user.name=fUser.displayName;
+    final AuthResult fUser = await _auth.signInWithCredential(credential);
+    user.userId=fUser.user.uid;
+    user.eMail=fUser.user.email;
+    user.name=fUser.user.displayName;
     return fUser;
   }
 

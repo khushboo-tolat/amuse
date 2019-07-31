@@ -65,54 +65,56 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                       ),
                       child: Container(
                         padding: new EdgeInsets.all(60),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            new MaterialButton(
-                              color: Color.fromRGBO(211, 211, 211, 1),
-                              child: new Row(
-                                children: <Widget>[
-                                  new Image.asset(
-                                    'assets/images/google_logo.png',
-                                    height: 48.0,
-                                    width: 50.0,
-                                  ),
-                                  new Text('  Sign in with Google', style: TextStyle(color: Colors.black54, letterSpacing: 1.3, fontSize: 17)),
-                                ],
-                              ),
-                              shape: new RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(20.0)
-                              ),
-                              onPressed: () async {
-                                if(await fireBaseConnection.googleAutoSignIn() != null)
-                                {
-                                  User user=new User();
-                                  if(await fireBaseConnection.checkUserIsAlreadyRegistered(user.userId)== true)
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              new MaterialButton(
+                                color: Color.fromRGBO(211, 211, 211, 1),
+                                child: new Row(
+                                  children: <Widget>[
+                                    new Image.asset(
+                                      'assets/images/google_logo.png',
+                                      height: 48.0,
+                                      width: 50.0,
+                                    ),
+                                    new Text('  Sign in with Google', style: TextStyle(color: Colors.black54, letterSpacing: 1.3, fontSize: 17)),
+                                  ],
+                                ),
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius: new BorderRadius.circular(20.0)
+                                ),
+                                onPressed: () async {
+                                  if(await fireBaseConnection.googleAutoSignIn() != null)
                                   {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => MyHomePage()));
+                                    User user=new User();
+                                    if(await fireBaseConnection.checkUserIsAlreadyRegistered(user.userId)== true)
+                                    {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => MyHomePage()));
 
+                                    }
+                                    else
+                                    {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => AddProfileDetails()));
+
+                                    }
+
+                                    //print(user.name+"       "+user.eMail+"     "+user.userId);
                                   }
                                   else
                                   {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => AddProfileDetails()));
-
-                                  }
-
-                                  //print(user.name+"       "+user.eMail+"     "+user.userId);
-                                }
-                                else
-                                {
 //                                  showDialog(context: context,builder: );
-                                }
-                              },
-                            )
-                          ],
+                                  }
+                                },
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

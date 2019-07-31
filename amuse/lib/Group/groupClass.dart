@@ -1,3 +1,5 @@
+import 'package:geolocator/geolocator.dart';
+
 class Group {
   String groupName;
   String createdBy;
@@ -5,4 +7,5 @@ class Group {
   String subCat;
   String groupPic;
   String desc;
+  Position position;
 }
