@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:amuse/LogIn_Page/login.dart';
 import 'package:amuse/Select_Categories/select_categories.dart';
 import 'package:amuse/Validation/validationClass.dart';
 import 'package:flutter/material.dart';
