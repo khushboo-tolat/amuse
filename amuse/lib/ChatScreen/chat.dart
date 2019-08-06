@@ -152,7 +152,7 @@ class ChatScreenState extends State<ChatScreen> {
               new Container(
                 decoration:
                   new BoxDecoration(color: Theme.of(context).cardColor),
-                child: _buildTextComposer(),
+                child: buildTextComposer(),
               ),
               new Builder(builder: (BuildContext context) {
                 _scaffoldContext = context;
@@ -174,11 +174,11 @@ IconButton getDefaultSendButton() {
   return new IconButton(
     icon: new Icon(Icons.send),
     onPressed: _isComposingMessage
-        ? () => _textMessageSubmitted(_textEditingController.text)
+        ? () => textMessageSubmitted(_textEditingController.text)
         : null,
   );
 }
-Widget _buildTextComposer() {
+Widget buildTextComposer() {
   return new IconTheme(
       data: new IconThemeData(
         color: _isComposingMessage
@@ -205,7 +205,7 @@ Widget _buildTextComposer() {
                       .ref()
                       .child("img_" + timestamp.toString() + ".jpg");
                   StorageTaskSnapshot snapshot = await storageReference.putFile(imageFile).onComplete;
-                  _sendMessage(
+                  sendMessage(
                       messageText: null, imageUrl:(await snapshot.ref.getDownloadURL()).downloadUrl.toString(),dateTime:timestamp );
               }
             ),
@@ -215,10 +215,10 @@ Widget _buildTextComposer() {
               controller: _textEditingController,
               onChanged: (String messageText) {
                 setState(() {
-                  _isComposingMessage = messageText.length > 0;
+                  _isComposingMessage = messageText.trim().length > 0;
                 });
               },
-              onSubmitted: _textMessageSubmitted,
+              onSubmitted: textMessageSubmitted,
               decoration:
                   new InputDecoration.collapsed(hintText: "Send a message"),
             ),
@@ -232,17 +232,22 @@ Widget _buildTextComposer() {
     )
   );
 }
-Future<Null> _textMessageSubmitted(String text) async {
+Future<Null> textMessageSubmitted(String text) async {
   int timestamp = new DateTime.now().millisecondsSinceEpoch;
   _textEditingController.clear();
   setState(() {
     _isComposingMessage = false;
   });
   await fireBaseConnection.ensureLoggedIn();
-  _sendMessage(messageText: text, imageUrl: null,dateTime:timestamp);
+  if(text.trim().length > 0 ){
+    sendMessage(messageText: text, imageUrl: null,dateTime:timestamp);
+  }
+  else{
+    new InputDecoration.collapsed(hintText: "Send a message");
+  }
 }
 
-void _sendMessage({String messageText, String imageUrl,int dateTime}) {
+void sendMessage({String messageText, String imageUrl,int dateTime}) {
   reference.push().set({
     'groupId':peerId,
     'message/image': messageText,
