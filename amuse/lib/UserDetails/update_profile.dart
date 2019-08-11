@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import '../fireBase_connection.dart';
 
 class update_profile extends StatefulWidget {

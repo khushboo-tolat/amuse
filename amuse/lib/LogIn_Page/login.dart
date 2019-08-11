@@ -1,9 +1,9 @@
 import 'package:amuse/UserDetails/userDetails.dart';
-import 'package:amuse/Validation/validationClass.dart';
 import 'package:flutter/material.dart';
 import '../fireBase_connection.dart';
 import '../themeFile.dart';
 import '../userClass.dart';
+import '../Home/home.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -93,8 +93,7 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                                       Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => MyHomePage()));
-
+                                              builder: (context) => Home_Page()));
                                     }
                                     else
                                     {
@@ -102,10 +101,7 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => AddProfileDetails()));
-
                                     }
-
-                                    //print(user.name+"       "+user.eMail+"     "+user.userId);
                                   }
                                   else
                                   {

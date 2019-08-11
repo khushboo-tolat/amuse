@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:amuse/Location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';

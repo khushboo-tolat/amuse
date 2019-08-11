@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:amuse/Group/groupDesc.dart';
-
 import 'chat_List.dart';
 import '../firebase_Connection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
@@ -152,7 +149,7 @@ class ChatScreenState extends State<ChatScreen> {
               new Container(
                 decoration:
                   new BoxDecoration(color: Theme.of(context).cardColor),
-                child: _buildTextComposer(),
+                child: buildTextComposer(),
               ),
               new Builder(builder: (BuildContext context) {
                 _scaffoldContext = context;
@@ -174,11 +171,11 @@ IconButton getDefaultSendButton() {
   return new IconButton(
     icon: new Icon(Icons.send),
     onPressed: _isComposingMessage
-        ? () => _textMessageSubmitted(_textEditingController.text)
+        ? () => textMessageSubmitted(_textEditingController.text)
         : null,
   );
 }
-Widget _buildTextComposer() {
+Widget buildTextComposer() {
   return new IconTheme(
       data: new IconThemeData(
         color: _isComposingMessage
@@ -205,7 +202,7 @@ Widget _buildTextComposer() {
                       .ref()
                       .child("img_" + timestamp.toString() + ".jpg");
                   StorageTaskSnapshot snapshot = await storageReference.putFile(imageFile).onComplete;
-                  _sendMessage(
+                  sendMessage(
                       messageText: null, imageUrl:(await snapshot.ref.getDownloadURL()).downloadUrl.toString(),dateTime:timestamp );
               }
             ),
@@ -215,10 +212,10 @@ Widget _buildTextComposer() {
               controller: _textEditingController,
               onChanged: (String messageText) {
                 setState(() {
-                  _isComposingMessage = messageText.length > 0;
+                  _isComposingMessage = messageText.trim().length > 0;
                 });
               },
-              onSubmitted: _textMessageSubmitted,
+              onSubmitted: textMessageSubmitted,
               decoration:
                   new InputDecoration.collapsed(hintText: "Send a message"),
             ),
@@ -232,17 +229,22 @@ Widget _buildTextComposer() {
     )
   );
 }
-Future<Null> _textMessageSubmitted(String text) async {
+Future<Null> textMessageSubmitted(String text) async {
   int timestamp = new DateTime.now().millisecondsSinceEpoch;
   _textEditingController.clear();
   setState(() {
     _isComposingMessage = false;
   });
   await fireBaseConnection.ensureLoggedIn();
-  _sendMessage(messageText: text, imageUrl: null,dateTime:timestamp);
+  if(text.trim().length > 0 ){
+    sendMessage(messageText: text, imageUrl: null,dateTime:timestamp);
+  }
+  else{
+    new InputDecoration.collapsed(hintText: "Send a message");
+  }
 }
 
-void _sendMessage({String messageText, String imageUrl,int dateTime}) {
+void sendMessage({String messageText, String imageUrl,int dateTime}) {
   reference.push().set({
     'groupId':peerId,
     'message/image': messageText,

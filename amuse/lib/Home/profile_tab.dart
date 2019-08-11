@@ -32,7 +32,9 @@ class ProfileTabState extends State<ProfileTab>{
                         height: 120.0,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(user.profilePicture),
+                              image: (user.profilePicture != null)
+                                  ?NetworkImage(user.profilePicture)
+                                  :AssetImage('assets/images/user_default.png'),
                               fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(80)

@@ -1,6 +1,5 @@
 import 'package:amuse/userClass.dart';
 import 'package:flutter/material.dart';
-
 import 'LogIn_Page/login.dart';
 
 void main() => runApp(MyApp());

@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+
 class Location
 {
   static Position getLocation()

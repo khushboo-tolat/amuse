@@ -21,7 +21,7 @@ class NotificationTab extends StatefulWidget{
 
 class NotificationTabState extends State<NotificationTab>{
   FireBaseConnection fireBaseConnection = new FireBaseConnection();
-  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -244,7 +244,7 @@ class NotificationTabState extends State<NotificationTab>{
         }
 
       }
-      
+
     }
 
   }
