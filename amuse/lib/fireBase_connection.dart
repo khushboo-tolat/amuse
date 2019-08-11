@@ -40,7 +40,6 @@ class FireBaseConnection
       _googleSignIn.signOut();
     });
   }
-
   Future<String> uploadImage(File file,String Id, bool temp) async
   {
     if(temp)

@@ -1,7 +1,19 @@
 //import 'themeFile.dart';
-import 'package:flutter/material.dart';
-import '../fireBase_connection.dart';
+import 'dart:collection';
 
+import 'package:amuse/Group/groupClass.dart';
+import 'package:amuse/Location/location.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import '../categorie.dart';
+import '../fireBase_connection.dart';
+import '../userClass.dart';
+
+HashMap<String, UserGroup> currentGroups =new HashMap();
+HashMap<String, Group> allGroups = new HashMap();
+User user= new User();
+ListCategories listCategories = new ListCategories();
 class NotificationTab extends StatefulWidget{
   @override
   State createState() => NotificationTabState();
@@ -9,6 +21,13 @@ class NotificationTab extends StatefulWidget{
 
 class NotificationTabState extends State<NotificationTab>{
   FireBaseConnection fireBaseConnection = new FireBaseConnection();
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserCategories();
+  }
 
 
   @override
@@ -169,6 +188,84 @@ class NotificationTabState extends State<NotificationTab>{
         );
       }
     );
+  }
+  getCurrentGroups()
+  async {
+    CollectionReference ref = Firestore.instance.collection('UserGroups');
+    QuerySnapshot eventsQuery = await ref
+        .where('userId', isEqualTo: user.userId)
+        .getDocuments();
+    if(eventsQuery.documents.length==0 || eventsQuery.documents.isEmpty)
+      return 0;
+    eventsQuery.documents.forEach((document)
+    {
+      currentGroups.putIfAbsent(document['groupId'], () => new UserGroup(document['groupId'] , document['mode']));
+    });
+  }
+  getNewGroups() async
+  {
+    await getCurrentGroups();
+    if(!listCategories.list.isEmpty)
+    {
+      for(Category c in listCategories.list.values )
+      {
+        for(String s in  c.subCat)
+        {
+          await Firestore.instance.collection('Group')
+              .where('category', isEqualTo: c.mainCat)
+              .where('subCat', isEqualTo: c.subCat).snapshots()
+              .forEach((temp)
+              {
+                if(Location.getDistence(temp.documents[0]['geoPoint'] as Position, temp.documents[0]['area']))
+                {
+                  if(!currentGroups.containsKey(temp.documents[0]['groupId'])
+                      && !allGroups.containsKey(temp.documents[0]['groupId']))
+                    {
+                      setState(() {
+                        allGroups.putIfAbsent(temp.documents[0]['groupId'],
+                                ()=> new Group.all(
+                                temp.documents[0]['groupId'],
+                                temp.documents[0]['groupName'],
+                                temp.documents[0]['groupPicture'],
+                                temp.documents[0]['category'],
+                                temp.documents[0]['subCat'],
+                                temp.documents[0]['description'],
+                                temp.documents[0]['geoPoint'],
+                                temp.documents[0]['area'],
+                                temp.documents[0]['createdBy']
+                            ));
+                      });
+                    }
+
+                }
+              });
+
+
+        }
+
+      }
+      
+    }
+
+  }
+  getCurrentGroupStatus() async
+  {
+
+
+  }
+  getUserCategories()async
+  {
+    CollectionReference ref = Firestore.instance.collection('UserInterest');
+    QuerySnapshot eventsQuery = await ref
+        .where('userId', isEqualTo: user.userId)
+        .getDocuments();
+    if(eventsQuery.documents.length==0 || eventsQuery.documents.isEmpty)
+      return 0;
+    eventsQuery.documents.forEach((document)
+    {
+      listCategories.list.putIfAbsent(document["category"], () => new Category(document["category"].toString(),new List<String>(document["subcat"])));
+    });
+
   }
 
   Widget showOtherGroupDialog() {
